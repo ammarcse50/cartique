@@ -8,6 +8,7 @@ export default {
   ],
 
   plugins: [require("daisyui")],
+
   daisyui: {
     themes: [
       {
@@ -21,9 +22,6 @@ export default {
           success: "#23b893",
           warning: "#f79926",
           error: "#ea535a",
-          body: {
-            "background-color": "#e3e6e6",
-          },
         },
       },
     ],

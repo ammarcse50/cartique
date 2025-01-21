@@ -1,13 +1,31 @@
+"use client";
 import { ShoppingCart } from "@/app/lib/cart";
+import { formatPrice } from "@/app/lib/format";
+import Link from "next/link";
+import { useState } from "react";
 
 interface ShoppingCartButtonProps {
   cart: ShoppingCart | null;
 }
 
 export default function ShoppingCartButton({ cart }: ShoppingCartButtonProps) {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  // Function to toggle dropdown visibility
+  const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
+
+  // Close the dropdown when clicking outside
+  const closeDropdown = () => {
+    setIsDropdownOpen(false);
+  };
+
   return (
-    <div className="dropdown dropdown-end">
-      <label tabIndex={0} htmlFor="" className="btn-ghost btn-circle btn">
+    <div className="relative">
+      <button
+        className="btn-ghost btn-circle btn"
+        aria-label="Shopping Cart"
+        onClick={toggleDropdown}
+      >
         <div className="indicator">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +45,36 @@ export default function ShoppingCartButton({ cart }: ShoppingCartButtonProps) {
             {cart?.size || 0}
           </span>
         </div>
-      </label>
+      </button>
+
+      {/* Dropdown Content */}
+      {isDropdownOpen && (
+        <div
+          className="absolute right-0 mt-2 w-52 bg-base-100 shadow-lg rounded-lg z-30"
+          onBlur={closeDropdown}
+          tabIndex={-1}
+        >
+          <div className="card card-compact">
+            <div className="card-body">
+              <span className="text-lg font-semibold">
+                {cart?.size || 0} Items
+              </span>
+              <span className="text-sm text-info">
+                Subtotal: {formatPrice(cart?.subtotal || 0)}
+              </span>
+              <div className="card-actions mt-2">
+                <Link
+                  href="/cart"
+                  className="btn bg-fuchsia-500 text-white btn-block"
+                  onClick={closeDropdown}
+                >
+                  View Cart
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import { cookies } from "next/headers";
 import prisma from "./db";
 import { Prisma } from "@prisma/client";
-import { NextResponse } from "next/server";
 
 export type CartWithProducts = Prisma.cartGetPayload<{
   include: {
